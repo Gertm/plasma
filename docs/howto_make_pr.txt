@@ -27,42 +27,84 @@ https://github.com/PlasmaLang/plasma/blob/master/runtime/pz_option.h#L81[runtime
 There is one 'l' too many. We'll fix it up so it's spelt correctly and
 commit it to git.
 
-* Use the correct Git commit message structure
-* Show how to clean up your local branches afterwards when it gets accepted.
-* Show how to to additional modifications
-* Maybe some git rebase and squash stuff
 
-NOTE: https://github.com/PlasmaLang/plasma/blob/master/runtime/pz_option.h#L81 temporarily has too many 'l's. This is a good bug to fix and make a PR from.
+.First I created a branch for the fix.
+----
+gert@solus ~/src/myplasma $ git branch
+* master
+gert@solus ~/src/myplasma $ git checkout -b pzruntime_typo
+Switched to a new branch 'pzruntime_typo'
+----
 
-* The git message structure documentation is in:
-  https://github.com/PlasmaLang/plasma/blob/master/CONTRIBUTING.md So make
-  sure to put a reference to it there.
+.Then I went in and edited the file.
+----
+gert@solus ~/src/myplasma $ cd runtime/
+gert@solus ~/src/myplasma/runtime $ nano -w pz_option.h
+gert@solus ~/src/myplasma/runtime $ git status
+On branch pzruntime_typo
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
 
-* From CONTRIBUTING.MD: Log messages should follow the style:
+    modified:   pz_option.h
 
-    ```
-    [component(s)] Title
+no changes added to commit (use "git add" and/or "git commit -a")
+----
 
-    Description
+.To see what has changed, I'll show you a git diff:
+----
+gert@solus ~/src/myplasma/runtime $ git diff
+diff --git a/runtime/pz_option.h b/runtime/pz_option.h
+index 7702333..808bec4 100644
+--- a/runtime/pz_option.h
++++ b/runtime/pz_option.h
+@@ -80,7 +80,7 @@ class Options {
+     bool gc_slow_asserts() const { return true; }
+     bool gc_poison() const { return true; }
+ 
+-    // Change temporarilly to enable tracing.
++    // Change temporarily to enable tracing.
+     bool gc_trace() const { return m_gc_trace; }
+     bool gc_trace2() const { return false; }
+ #endif
+----
 
-    Any other changes including changes that were needed to support this
-    change or followed as a consequence of this change.
-    ```
+.So now we commit:
+----
+gert@solus ~/src/myplasma/runtime $ git commit -a -m "Fixed typo in pz_option.h"
+[pzruntime_typo 23fb8aa] Fixed typo in pz_option.h
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+----
 
-    We provide a .gitmessage in the root of the repository.
-    Run this command to start using the new commit message template:
+NOTE: We didn't follow the guideline for commit messages here, to keep the example small. But please try and follow the correct formatting for them: link:https://github.com/PlasmaLang/plasma/blob/master/CONTRIBUTING.md#submitting-your-changes[https://github.com/PlasmaLang/plasma/blob/master/CONTRIBUTING.md]
 
-    ```
-    git config --local commit.template /path/to/repo/.gitmessage
-    ```
+.Then we upload the new branch to our own repo online
+----
+gert@solus ~/src/myplasma/runtime $ git push --set-upstream origin pzruntime_typo
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 366 bytes | 366.00 KiB/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+remote:
+remote: Create a pull request for 'pzruntime_typo' on GitHub by visiting:
+remote:      https://github.com/Gertm/plasma/pull/new/pzruntime_typo
+remote:
+To github.com:Gertm/plasma.git
+ * [new branch]      pzruntime_typo -> pzruntime_typo
+Branch 'pzruntime_typo' set up to track remote branch 'pzruntime_typo' from 'origin'.
+----
 
-* Make sure to mention this and refer to the correct document to refer to in
-  case of doubt. Who knows, this might change again in the future.
+As you can see from the output, we can now go to github.com and create the pull request. +
+You can still see it here: link:https://github.com/PlasmaLang/plasma/pull/176[https://github.com/PlasmaLang/plasma/pull/176].
 
-* In CONTRIBUTING.md it says: “Each file should be listed with more detailed
-  information. Take a look at previous changes for examples.” => We could go
-  look for some good examples and show them in this document.
-  This was removed you can list a summary of changes in each/some files if
-  you think it may help whowever is reviewing your change.
+
+Shortly after, Paul approved this pull request and the change got merged into the main repo. +
+All we had to do now is clean up our own branch.
+
+NOTE: Show how to clean up your local branches afterwards when it gets accepted.
+
 
 // vim: set syntax=asciidoc:
